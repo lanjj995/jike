@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 router.post('/add',function(req,res) {
   var teacher = req.body;
   var sqls = [{
-    sql:"insert into g_teacher values(?,?,?,?)",
+    sql:"insert into jk_teacher values(?,?,?,?)",
     params:[UUID.v1(),teacher.name,teacher.type,teacher.desc]
   }];
   transcation(sqls,
@@ -35,6 +35,26 @@ router.post('/add',function(req,res) {
 
 // 删
 router.get('/delete',function(req,res) {
+  var id = req.query.id;
+  var sqls = [
+    {
+      sql:"delete from jk_teacher where id = ?",
+      params:[id]
+    }
+  ]
+  transcation(sqls,function(err,data) {
+    if (err) {
+      res.send({
+        code:"err",
+        message:"删除失败"
+      })
+    } else {
+      res.send({
+        code:"success",
+        message:"删除成功"
+      })
+    }
+  })
 });
 
 // 改
@@ -43,8 +63,8 @@ router.post('/motify',function(req,res){
 });
 
 // 查
-router.get('/findAll',function(req,res){
-  pool.query("select id,name,type,desci from g_teacher",[],(err,data)=>{
+router.get('/list',function(req,res){
+  pool.query("select id,name,type,imgPath,status,descreption from jk_teacher",[],(err,data)=>{
     if (err) {
       console.log(err);
       res.send({
@@ -52,10 +72,9 @@ router.get('/findAll',function(req,res){
         message:"查询失败"
       });
     } else {
-      console.log(data);
       res.send({
-        code:"succecss",
-        data: data.data
+        code:"success",
+        data: data
       });
     }
   });

@@ -5,8 +5,8 @@
     </div>
     <div class="content">
       <div class="avator">
-      <img src="@/assets/header.png">
-      <label for="avator" class="avatorLable">上传头像</label><input type="file" id="avator">
+      <img src="@/assets/header.png" @mouseover="showAvatorLabel = true">
+      <label for="avator" class="avatorLable" v-show="showAvatorLabel"  @mouseout="showAvatorLabel = false">上传头像</label><input type="file" id="avator">
       </div>
       <p>{{this.$store.state.user.nickname}}</p>
 
@@ -41,7 +41,7 @@
       </table>
     </div>
     <div class="submit">
-      <inputButtonCom style="width:110px;color:#fff;height:38px;background: rgb(255, 128, 0);" value="保存"></inputButtonCom>
+      <inputButtonCom style="width:110px;color:#fff;height:38px;background: rgb(255, 128, 0);" @click="updateUserMessage" value="保存"></inputButtonCom>
     </div>
   </div>
 </template>
@@ -55,17 +55,22 @@ export default {
   },
   data(){
     return {
-    username:""
+    username:"",
+    showAvatorLabel:false
     }
   },
   methods: {
     toUpdatePsw() {
       this.$router.push("/account/updatepsw");
+    },
+    updateUserMessage(){
+      
     }
   },
   created(){
     this.username = this.$store.state.user.nickname;
-  }
+  },
+
 };
 </script>
 <style scoped>
@@ -109,7 +114,6 @@ export default {
   margin: auto;
   position: absolute;
   top: 0;
-  display: none;
 }
 
 table {

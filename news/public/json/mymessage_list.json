@@ -1,0 +1,56 @@
+{
+"code": "success",
+"data": {
+    "comments": [
+        {
+            "buildLevel": 4,
+            "articleId": {
+                "_id": "5a7d0cd6e6b384654f69c14f",
+                "title": "外卖员跳入冰窟连救3幼童 呛水不放弃：只想救人"
+            },
+            "against": 0,
+            "vote": 0,
+            "commentId": "115000007",
+            "user": {
+                "nickname": "fasdfasdf"
+            },
+            "content": "今天天气真好",
+            "create_time": 1518331626564,
+            "isRead": false
+        },
+        {
+            "buildLevel": 4,
+            "articleId": {
+                "_id": "5a7d0cd6e6b384654f69c14f",
+                "title": "外卖员跳入冰窟连救3幼童 呛水不放弃：只想救人"
+            },
+            "against": 0,
+            "vote": 0,
+            "commentId": "115000008",
+            "user": {
+                "nickname": "fasdfasdf"
+            },
+            "content": "今天天气真好",
+            "create_time": 1518331626564,
+            "isRead": false
+        },
+        {
+            "buildLevel": 4,
+            "articleId": {
+                "_id": "5a7d0cd6e6b384654f69c14f",
+                "title": "外卖员跳入冰窟连救3幼童 呛水不放弃：只想救人"
+            },
+            "against": 0,
+            "vote": 0,
+            "commentId": "115000009",
+            "user": {
+                "nickname": "fasdfasdf"
+            },
+            "content": "今天天气真好",
+            "create_time": 1518331626564,
+            "isRead": false
+        }
+    ],
+    "counts": 1
+}
+}

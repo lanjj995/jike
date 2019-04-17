@@ -1,0 +1,46 @@
+{
+    "code": "success",
+    "data": {
+        "comments": {
+            "33052949": {
+                "against": 0,
+                "buildLevel": 1,
+                "commentId": "33052949",
+                "content": "至少要奖励外卖员十万块，这可是冒着命危险，救了两条命啊",
+                "user": {
+                    "avatar": "avatar/f95a9da7e02fb4b7a06ee68fd97f6bc0",
+                    "location": "云南省昆明市",
+                    "nickname": "葫芦七兄弟"
+                },
+                "vote": 11,
+                "create_time": 1518105735000
+            },
+            "33331921": {
+                "against": 0,
+                "buildLevel": 2,
+                "commentId": "33331921",
+                "content": "就是没生命危险，宁夏这天寒地冻的，下水也要极大的勇气，多奖点不过分。获救家长不表示心里不惭愧吗？",
+                "user": {
+                    "avatar": "avatar/c601da93a0df280a2c1915cdff5fcfe2",
+                    "location": "江苏省",
+                    "nickname": "本周日你有空吗"
+                },
+                "vote": 1,
+                "create_time": 1518144662000
+            },
+            "115000001": {
+                "buildLevel": 3,
+                "preCommentId": "33331921",
+                "against": 0,
+                "vote": 0,
+                "commentId": "115000001",
+                "user": {
+                    "nickname": "新闻用户18792548339"
+                },
+                "content": "message4",
+                "create_time": 1518146685441
+            }
+        },
+        "commentIds": "33052949,33331921,115000001"
+    }
+}

@@ -53,7 +53,7 @@ export default {
           return false;
         } else {
           this.checkPasswordValue = "";
-          return false;
+          return true;
         }
       } else {
         this.checkPasswordValue = "请输入密码";
@@ -61,15 +61,18 @@ export default {
       }
     },
     loginmethod() {
+      console.log("111111");
       var isPhone =this.checkPhone();
       if (!isPhone) return;
       var isPassword = this.checkPassword();
       if (!isPassword) return;
+      console.log("22222222");
       // 登录
       login(this.phone, this.password)
         .then(res => {
           if (res.data.code === "success") {
             this.$store.state.user = res.data.data.account;
+            localStorage.user = JSON.stringify(res.data.data.account);
             this.$message({
               type:'success',
               message:'登陆成功'

@@ -189,11 +189,11 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
-  },
-  created() {
-    this.$route.query.flag ? (this.isRegist = false) : (this.isRegist = true);
-    getImgCaptcha()
+      
+    },
+    // 获取图片验证码
+    getImgCaptchaMethod(){
+        getImgCaptcha()
       .then(res => {
         this.captcha = res.data;
         console.log(res);
@@ -202,6 +202,11 @@ export default {
       .catch(err => {
         console.log(err);
       });
+      }
+
+  },
+  created() {
+    this.getImgCaptchaMethod();
   },
    
 };

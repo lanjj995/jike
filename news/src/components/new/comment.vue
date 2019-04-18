@@ -1,7 +1,7 @@
 <template>
   <!-- 通过判断level是否等于commentIds的长度来判断是否为楼层的顶部，如果是则实行else，不是的就接着递归 -->
 
-  <div class="comment-box" v-if="level !== commentIds.split(',').length || flag">
+  <div class="comment-box" v-if="level !== commentIds1.split(',').length || flag">
     <img src="@/assets/logo.png" alt="">
     <div class="inner-box">
       <span class="user">{{commentList[commentId].user.nickname}}</span>
@@ -28,7 +28,7 @@
       </p>
     </div>
     </div>
-    <commentBox v-if="level !== 1" v-bind:commentList="commentList" v-bind:commentIds="commentIds" :level="level - 1" :flag="flag"/>
+    <commentBox v-if="level !== 1" v-bind:commentList="commentList" v-bind:commentIds="commentIds1" :level="level - 1" :flag="flag"/>
   </div>
 
   <div v-else class="comment-item">
@@ -37,7 +37,6 @@
     <div class="inner-box">
       <span class="user">{{commentList[commentId].user.nickname}}</span>
       <span class="time">{{commentList[commentId].create_time | getTime}}</span>
-      <span class="floor-count" v-show="!flag">{{commentList[commentId].buildLevel+"楼"}}</span>
 
       <p class="content" >
       <span class="content-content">
@@ -60,7 +59,7 @@
       </p>
     </div>
 
-      <commentBox v-if="level !== 1" v-bind:commentList="commentList" v-bind:commentIds="commentIds" :level="level - 1"/>
+      <commentBox v-if="level !== 1" v-bind:commentList="commentList" v-bind:commentIds="commentIds1" :level="level - 1"/>
 
     </div>
   </div>
@@ -84,6 +83,7 @@
         commentRateContent:"",
         isup:up,
         isdown:down,
+        commentIds1:""
       }
     },
     methods:{
@@ -97,6 +97,23 @@
           } else {
 addcomment(null,this.commentId,this.commentRateContent,this.$store.state.user.token).then(res => {
           if (res.data.code === "success") {
+            let create_time = new Date().getTime();
+          let nickname = this.$store.state.user.nickname;
+          let c = {
+                buildLevel: 1,
+                against: 0,
+                vote: 0,
+                commentId: ""+create_time,
+                user: {
+                    nickname,
+                },
+                content: this.commentRateContent,
+                create_time,
+          };
+          this.$set(this.commentList,""+create_time,c);
+          let str = this.commentIds1;
+          this.commentIds1 = create_time+","+str;
+          console.log(str,this.commentIds1,this.commentList);
             this.$message({
               message:'评论成功',
               type:'success'
@@ -132,7 +149,7 @@ addcomment(null,this.commentId,this.commentRateContent,this.$store.state.user.to
     },
     computed: {
       commentId(){
-        return this.commentIds.split(',')[this.level - 1]
+        return this.commentIds1.split(',')[this.level - 1]
       },
       avatar: function () {
         return avatar
@@ -162,7 +179,9 @@ addcomment(null,this.commentId,this.commentRateContent,this.$store.state.user.to
     components:{
       buttonCom
     },
-   
+    created(){
+      this.commentIds1 = this.commentIds;
+    }
   }
 </script>
 

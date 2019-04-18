@@ -7,12 +7,12 @@
       <a href="#" :style="{color:color?color:'#0074ff;'}">注册</a>
     </div>
     <div class="user-header" v-show="this.$store.state.user">
-      <img :src="user.avator?user.avator:defaultAvator" alt="头像" id="header" @click="goMessage">
+      <img :src="avatar?avatar:defaultAvator" alt="头像" id="header" @click="goMessage">
       <span id="username" @click="goMessage">{{user.nickname}}</span>
 
       <img :src="imgUrl" class="arrow_down" @click="falg = !falg">
       <nav :style="{display:falg?'block':'none'}">
-        <li @click="goMessage">
+        <li @click="goAccount">
           <img src="@/assets/icon_my.png">
           我的账户
         </li>
@@ -34,15 +34,20 @@ export default {
     return {
       falg: false,
       user:{},
+      avatar:"",
       defaultAvator,
     };
   },
   methods:{
     goMessage(){
+      this.$router.push({path:'/message'});
+    },
+    goAccount(){
       this.$router.push({path:'/account'});
     },
     loginOut(){
       this.$store.state.user = {};
+      localStorage.user = null;
       this.$router.push({path:'/user/login'});
     }
   },
@@ -55,6 +60,8 @@ export default {
   },
   created(){
     this.user = this.$store.state.user;
+    this.avatar = this.$store.state.avatar;
+    
   }
 };
 </script>

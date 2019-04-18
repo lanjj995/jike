@@ -1,32 +1,20 @@
 import Axios from "./index";
 
-function getnewList(page) {
-    return Axios.get('/new/list', {
-        params: {
-            channelname: 'shehui',
-            page: page,
-            limit: 3
-        }
-    });
-}
 // 获取图片验证码
 function getImgCaptcha() {
-    return Axios.get('/img/captcha');
+    return Axios.get('https://dev.apis.ittim.ltd/nWGq7NqEf/img/captcha');
 }
 // 获取短信验证码
 function getSmsCaptcha(phone, type, imgCaptcha) {
-    return Axios.post('/sms/captcha', {
-        params: {
+    return Axios.post('https://dev.apis.ittim.ltd/nWGq7NqEf/sms/captcha', {
             phone,
             type,
             imgCaptcha
-        }
-
     });
 }
 // 获取短信验证码
 function getSmsCaptchaReceive(phone, type) {
-    return Axios.get('/sms/captcha/receive', {
+    return Axios.get('https://dev.apis.ittim.ltd/nWGq7NqEf/sms/captcha/receive', {
         params: {
             phone,
             type
@@ -35,7 +23,7 @@ function getSmsCaptchaReceive(phone, type) {
 }
 // 注册
 function regist(phone, password, smsCaptcha) {
-    return Axios.post('/account/register', {
+    return Axios.post('https://dev.apis.ittim.ltd/nWGq7NqEf/account/register', {
 
         phone,
         password,
@@ -44,14 +32,20 @@ function regist(phone, password, smsCaptcha) {
 }
 // 登陆
 function login(phone, password) {
-    return Axios.post('/account/login', {
+    return Axios.post('https://dev.apis.ittim.ltd/nWGq7NqEf/account/login', {
         phone,
         password
     });
 }
 // 找回密码
 function findPassword(phone, SMSCaptcha, password) {
-    return Axios.post('/account/find', {
+    return Axios.post('https://dev.apis.ittim.ltd/nWGq7NqEf/account/find', {
+        phone, SMSCaptcha, password
+    })
+}
+// 修改密码
+function updatepsw(phone,smsCaptcha,password){
+    return Axios.post('https://dev.apis.ittim.ltd/nWGq7NqEf/account/reset',{
         phone, SMSCaptcha, password
     })
 }
@@ -62,5 +56,6 @@ export {
     getSmsCaptchaReceive,
     regist,
     login,
-    findPassword
+    findPassword,
+    updatepsw
 }

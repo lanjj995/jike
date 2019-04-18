@@ -20,9 +20,9 @@ export default {
     }
   },
   methods:{
+    // 获取我的评论列表
     getMyCommentList(){
       userComments(this.$store.state.user.token,this.page,this.limit).then(res => {
-          console.log(res);
         if(res.data.code === "success") {
           this.comments = res.data.data.comments;
           console.log(this.comments);
@@ -30,13 +30,13 @@ export default {
           this.$message.error(res.data.message);
         }
       }).catch(err => {
-
+        // 错误处理
       });
     }
   },
   created(){
+    // 获取评论列表
     this.getMyCommentList();
-    
   }
 };
 </script>

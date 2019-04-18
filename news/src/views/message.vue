@@ -3,7 +3,7 @@
     <headerCom class="accountHeader" :color="'#ffffff'"></headerCom>
     <div class="content">
       <div class="header">
-        <img src="../assets/header.png">
+        <img :src="this.$store.state.avatar?this.$store.state.avatar:defaultHeader">
       </div>
       <div class="biaojiyidu" v-show="this.$route.path.indexOf('/mymessage')!=-1">
         <span>
@@ -37,11 +37,13 @@
 <script>
 import headerCom from "../components/common/header";
 import footerCom from "../components/common/footer";
+import defaultHeader from "../assets/header.png";
 import {messageCount} from "@/api/account.js";
 export default {
   data() {
     return {
-      count:0
+      count:0,
+      defaultHeader,
     };
   },
   components: {
@@ -49,7 +51,7 @@ export default {
     footerCom
   },
   methods:{
-    getMessageCount(){
+    getMessageCount(token){
       messageCount(token).then(res => {
         if (res.data.code === "success") {
           this.count = res.data.count;

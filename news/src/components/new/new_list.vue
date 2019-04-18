@@ -14,7 +14,9 @@
           {{hotnew.title}}
         </option>
       </datalist>
-      <canvas id="myCanvas" width="100" height="48" @click="getSearchList"></canvas>
+      <div @click="getSearchList">
+        <canvas id="myCanvas" width="100" height="48"></canvas>
+      </div>
     </div>
     <div class="nav" :style="{top:top+'px'}">
       <ul>
@@ -39,11 +41,11 @@
 </template>
 <script>
 import newComponent from "./article";
-import { new_getnewList, hotNews_list } from "@/api/new.js";
+import { new_getnewList, hotNews_list, searchList } from "@/api/new.js";
 export default {
   data() {
     return {
-      navList: ["要闻", "社会", "军事", "科技", "娱乐"],
+      keyList: ["yaowen", "shehui", "ent", "tech", "war"],
       isActive: "yaowen",
       count: 0,
       news: [],
@@ -58,27 +60,57 @@ export default {
   methods: {
     getSearchList() {
       // 搜索热词
-    },
-    getnewlist(channelname, page, limit) {
-      if (this.isActive != channelname) {
-        this.news = [];
+      if (!this.search) {
+        this.$message.error("请输入您想要搜索的关键词");
+        return;
+      } else {
+        this.isActive = this.search;
+        this.page=1;
+        this.page2=1;
+        this.news=[];
+        this.getnewlist(this.isActive, this.page, this.limit);
       }
-      this.isActive = channelname;
+    },
+    getnewlist(channelname) {
+      if (this.isActive != channelname) {
+        this.isActive = channelname;
+        this.page=1;
+        this.page2=1;
+        this.news=[];
+      }
+      console.log(this.isActive,this.page,this.page2,this.news);
       if (this.page === this.page2) {
-              this.page2 += 1;
-        new_getnewList(channelname, page, limit)
-          .then(res => {
-            if (res.data.code === "success") {
-              this.news = this.news.concat(res.data.data.news);
-              this.count = res.data.data.counts;
-              this.page += 1;
-            } else {
-              this.$message.error(res.data.message);
-            }
-          })
-          .catch(err => {
-            // 错误处理
-          });
+        this.page2 += 1;
+        if (this.keyList.indexOf(channelname) === -1) {
+          searchList(channelname,  this.page, this.limit)
+            .then(res => {
+              if (res.data.code === "success") {
+                this.news = this.news.concat(res.data.data.news);
+                this.count = res.data.data.counts;
+                this.page += 1;
+              } else {
+                this.$message.error(res.data.message);
+              }
+            })
+            .catch(err => {
+              // 错误处理
+            });
+        } else {
+          new_getnewList(channelname, this.page, this.limit)
+            .then(res => {
+              if (res.data.code === "success") {
+                this.news = this.news.concat(res.data.data.news);
+                console.log(this.news);
+                this.count = res.data.data.counts;
+                this.page += 1;
+              } else {
+                this.$message.error(res.data.message);
+              }
+            })
+            .catch(err => {
+              // 错误处理
+            });
+        }
       }
     },
     gethotNews_list() {
@@ -86,7 +118,6 @@ export default {
         .then(res => {
           if (res.data.code === "success") {
             this.hotnews = res.data.data.news;
-            console.log(this.hotnews);
           } else {
             this.$message.error(res.data.message);
           }
@@ -99,9 +130,13 @@ export default {
   components: {
     newComponent
   },
-  created() {
-    this.getnewlist("yaowen");
+  watch: {
+   
   },
+  created() {
+    this.getnewlist("yaowen",this.page,this.limit);
+  },
+
   mounted() {
     var myCanvas = document.getElementById("myCanvas");
     var context = myCanvas.getContext("2d");
@@ -113,24 +148,26 @@ export default {
       context.drawImage(img, 45, 10, 28, 28);
     };
     img.src = require("@/assets/icon_ search.png");
-      window.onscroll = () => {
-        // 导航
-        console.log(document.documentElement.scrollTop);
-        this.top = 187 + document.documentElement.scrollTop;
-  
-        let arr = document.querySelectorAll(".article");
-        let last = arr[arr.length - 1];
-        if (
-          last.offsetTop -
-            document.documentElement.scrollTop +
-            last.clientHeight <
-          document.documentElement.clientHeight
-        ) {
-          if (arr.length <= this.count) {
-            this.getnewlist(this.isActive, this.page, this.limit);
-          }
+    window.onscroll = () => {
+      // 导航
+      this.top = 187 + document.documentElement.scrollTop;
+
+      let arr = document.querySelectorAll(".article");
+      let last = arr[arr.length - 1];
+      console.log(arr.length);
+      if (!last)
+      return ;
+      if (
+        last.offsetTop -
+          document.documentElement.scrollTop +
+          last.clientHeight <
+        document.documentElement.clientHeight
+      ) {
+        if (arr.length < this.count) {
+          this.getnewlist(this.isActive, this.page, this.limit);
         }
-      };
+      }
+    };
   }
 };
 </script>

@@ -21,5 +21,8 @@ new Vue({
   components: {
   },
   render: function (h) { return h(App) },
-
+  created(){
+    this.$store.state.user = JSON.parse(localStorage.user);
+    this.$store.state.avatar = localStorage.avatar;
+  }
 }).$mount('#app')

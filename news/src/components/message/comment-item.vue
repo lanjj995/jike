@@ -72,7 +72,6 @@ export default {
             let index = this.isShow.indexOf(commentId);
             if (index===-1) {
                 this.isShow.push(commentId);
-                console.log(this.isShow);
             }  else {
                 this.isShow.splice(index,1);
             }
@@ -119,8 +118,16 @@ export default {
       );
     }
   },
+  watch:{
+    comments(){
+      console.log(this.comments);
+      for (index in comments){
+        
+        getcomments_level(comments[index].commentId);
+      }
+    }
+  },
   created(){
-    console.log(this.comments);
   }
 };
 </script>

@@ -48,6 +48,7 @@
 import inputButton from "../input/input-button";
 import comment from "./comment";
 import {details,comment_list,addcomment} from "@/api/new.js"
+import { create } from 'domain';
 export default {
   data(){
     return {
@@ -126,15 +127,43 @@ export default {
         } else {
       addcomment(this.id,null,this.commentcontent,this.$store.state.user.token).then(res => {
         if (res.data.code === "success") {
+          // 添加评论\
+          let create_time = new Date().getTime();
+          let nickname = this.$store.state.user.nickname;
+          let c = {
+                buildLevel: 1,
+                against: 0,
+                vote: 0,
+                commentId: ""+create_time,
+                user: {
+                    nickname,
+                },
+                content: this.commentcontent,
+                create_time,
+          };
+          console.log(c);
+          this.$set(this.commentList,""+create_time,c);
+          this.commentIdsList.unshift(""+create_time);
           this.$message(
             {
               message:"评论成功",
               type:"success"
             }
           );
-          // 添加评论
+          
         } else {
-            this.$message.error(res.data.message);
+            if (res.data.code === "account_token_invalid") {
+              this.$alert("消息提示",res.data.message,{
+                comfirmButtonText:"确认",
+                callback : action => {
+                  this.$router.push("/user/login");
+                }
+              })
+            } else {
+
+              this.$message.error(res.data.message);
+            }
+
         }
       }).catch(err => {
         // 处理错误

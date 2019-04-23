@@ -9,6 +9,16 @@ var pool = mysql.createPool({
     connectionLimit:10
 });
 
+function find(sql,params,callback){
+    pool.query(sql,params,function(err,data) {
+        if (err) {
+          callback(err,null);
+        } else {
+          callback(null,data);
+        }
+      })
+}
+
 // transcation
 function transcation(sqls, callback) {
     // 获取连接
@@ -75,5 +85,6 @@ function transcation(sqls, callback) {
 
 module.exports = {
     transcation,
-    pool
+    pool,
+    find
 };

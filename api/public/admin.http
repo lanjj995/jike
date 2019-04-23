@@ -1,0 +1,15 @@
+@url = http://localhost:3000
+
+### 登陆
+POST {{url}}/admin/login
+Content-Type: application/json
+
+{
+    "username":"lianglongfen",
+    "password":"123456"
+}
+
+### 删除banner
+GET {{url}}/banner/delete?id=1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibGlhbmdsb25nZmVuIiwiaWF0IjoxNTU2MDEyMTcyLCJleHAiOjE1NTYwMTIyMzJ9.wU6MKRXYQNgn47maihZ37H4lYo7G9-oBAOlU4tF4GaU
+

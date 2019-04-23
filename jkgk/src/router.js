@@ -15,7 +15,7 @@ export default new Router({
             }
         },
         {
-            path:'/index',
+            path:'/',
             name:'index',
             component: function(){
                 return import ("./components/index");
@@ -42,16 +42,24 @@ export default new Router({
                         return import ('./components/tabs/teacher');
                     }
                 },
+                {
+                    path:'course',
+                    name:'course',
+                    component:function(){
+                        return import ('./components/tabs/course');
+                    }
+                },
+                {
+                    path:'404',
+                    name:'404',
+                    component: function(){
+                        return import ("./components/common/404");
+                    }
+                },
                 
             ]
         },
-        {
-            path:'/404',
-            name:'404',
-            component: function(){
-                return import ("./components/common/404");
-            }
-        },
+        
         
         
     ]

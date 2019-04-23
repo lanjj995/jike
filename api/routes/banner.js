@@ -1,5 +1,5 @@
 var express =require('express');
-
+var {verfity} = require('./api.js');
 var router = express.Router();
 
 var {transcation,pool} = require('./mysql_config');
@@ -26,10 +26,22 @@ router.get('/list',function(req,res){
     });
 });
 
+/**
+ * token
+ * id
+ */
 
-router.get('/delete',function(req,res) {
-    
+router.get('/delete',verfity,function(req,res) {
+    // 验证token的合法性
+    console.log("ssssss");
     var id = req.query.id;
+    var token = req.query.token;
+    if (id && token) {
+        res.send({
+
+        })
+    }
+
     var sqls = [
         {
             sql:'delete from jk_banner where id = ?',

@@ -1,9 +1,9 @@
 var express = require('express');
 var UUID = require('uuid');
 var md5 = require('md5');
-
 var router = express.Router();
 var {transcation,pool} = require('./mysql_config');
+var jwt = require("jsonwebtoken");
 
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
@@ -12,19 +12,28 @@ router.get('/', function(req, res, next) {
 // admin登陆
 router.post('/login',function(req,res) {
     var user = req.body;
-    console.log(req.body);
-    pool.query("select id,username,password from jk_admin where username = ? and password = ?",[user.username,user.password],function(err,data) {
+    console.log(user);
+    pool.query("select id,username,password,avatar from jk_admin where username = ? and password = ?",[user.username,user.password],function(err,data) {
         if (err) {
             res.send({
                 code:"err",
                 message:"登陆失败"
             });
         } else {
-            console.log(data);
+            var user = data[0];
             if (data[0]) {
+                var content = {name:req.body.username};
+                var secret = "suiyi";
+                var token = jwt.sign(content,secret,{expiresIn:60*1});
                 res.send({
                     code:"success",
-                    message:"登陆成功"
+                    data:{
+                        user:{
+                            username:user.username,
+                            avatar:user.avatar,
+                        },
+                        token:token
+                    }
                 });
             } else {
                 res.send({

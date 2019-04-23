@@ -13,7 +13,8 @@
     "element-ui": "^2.7.2",
     "vue": "^2.6.6",
     "vue-router": "^3.0.4",
-    "vue-store": "^0.3.1-moved"
+    "vue-store": "^0.3.1-moved",
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

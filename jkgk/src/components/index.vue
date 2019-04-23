@@ -1,29 +1,22 @@
 <template>
   <el-container style="height: 100%; border: 1px solid #eee">
     <el-header class="header_one">
-      <span>即刻公考后台管理系统</span>
-
-      <el-dropdown>
-        <i class="el-icon-setting" style="margin-right: 15px"></i>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>查看</el-dropdown-item>
-          <el-dropdown-item>新增</el-dropdown-item>
-          <el-dropdown-item>删除</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <span>王小虎</span>
+        <headerCom></headerCom>
     </el-header>
     <el-main>
       <el-container style="height: 100%; border: 1px solid #eee">
         <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-          <menuCom :menus="menus"></menuCom>
+          <menuCom :menus="menus" @addTab="addTabMethod"></menuCom>
         </el-aside>
 
         <el-container>
           <el-header class="tabheader" height="30px">
-            <el-button size="mini" v-for="t in tabs" :key="t.index">{{t.title}}<i class="el-icon-close"></i></el-button>
+            <el-button size="mini" v-for="t in tabs" :key="t.index" @click="goRouter(t.index,t.router)">{{t.title}}<i class="el-icon-close" @click="closeTab(t.index)"></i></el-button>
           </el-header>
+          <div class="main">
+
           <router-view/>
+          </div>
         </el-container>
       </el-container>
     </el-main>
@@ -32,10 +25,12 @@
 </template>
 <script>
 import menuCom from "./common/menu";
+import headerCom from "./common/header";
 import { getmenu } from "../api/menu";
 export default {
   components: {
     menuCom,
+    headerCom
   },
   data() {
     return {
@@ -44,7 +39,8 @@ export default {
       tabs:[
         {
           title:'home',
-          index:0
+          index:0,
+          router:'home'
         }
       ]
     };
@@ -61,22 +57,36 @@ export default {
           // 错误
         });
     },
-    addtab(title){
+    addTabMethod(value){
       var length = this.tabs.length;
       this.tabs.push({
-        title:title,
+        title:value.title,
+        router:value.router,
         index:length
       })
+    },
+    goRouter(index,router) {
+      this.$router.push({name:router});
+    },
+    closeTab(index,router) {
+      console.log(index,router);
+      console.log(this.tabs.splice(index,1));
+      console.log(this.tabs);
+      this.$router.push({name:this.tabs[index-1]['router']});
     }
   },
   created() {
     this.getMenuMethod();
-  }
+    this.$router.push({name:'home'});
+  },
 };
 </script>
 
 
 <style>
+.main{
+box-sizing: border-box;
+min-height: 500px;}
 .el-header {
   background-color: #b3c0d1;
   color: #333;
@@ -112,6 +122,11 @@ export default {
 .tabheader > .el-icon-close{
   float: right;
 }
-
+.el-icon-close {
+  float: right;
+}
+.active{
+  background: #f00;
+}
 </style>
 

@@ -4,7 +4,7 @@
             <template slot="title">
                 <i class=""></i>{{item.title}}
             </template>
-            <el-menu-item v-for="(i,index) in item.menus" :key="i.id" :index="item.id+'-'+index+1" @click="addtab(''+i.title)">{{i.title}}</el-menu-item>
+            <el-menu-item v-for="(i,index) in item.menus" :key="i.id" :index="item.id+'-'+index+1" @click="addtab(i.component,i.title)">{{i.title}}</el-menu-item>
         </el-submenu>
     </el-menu>
 </template>
@@ -13,6 +13,12 @@ export default {
     props:{
         menus:Array
     },
+    methods:{
+        addtab(router,title){
+            this.$emit('addTab',{title,router});
+            this.$router.push({name:router});
+        }
+    }
 }
 </script>
 <style scoped>

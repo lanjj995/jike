@@ -3,11 +3,18 @@ import App from './App.vue'
 import elementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router';
+import store from './store';
 
 Vue.config.productionTip = false
 Vue.use(elementUI);
 
 new Vue({
   router,
+  store,
   render: h => h(App),
+  created(){
+    this.$store.state.user = JSON.parse(localStorage.user);
+    this.$store.state.token = localStorage.token;
+
+  }
 }).$mount('#app')

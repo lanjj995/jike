@@ -62,6 +62,7 @@ export default {
       smsCaptcha: "",
       password: "",
       comfirPasssword: "",
+      captchasuccess:false,
       checkObject: {
         checkPhoneValue: "",
         checkImgCaptchaVlaue: "",
@@ -144,9 +145,31 @@ export default {
     goLogin() {
       this.$router.push({ path: "login" });
     },
-    // 获取短信验证码
+   // 获取短信验证码
     getCaptcha() {
-      getSmsCaptchaReceive(this.phone, "register")
+      var isPhone = this.checkPhone();
+      if (!isPhone) return;
+      if (this.captchasuccess) {
+        this.getCaptchaRecevie();
+      } else {
+         getSmsCaptcha(this.phone, "reset", this.imgCaptcha)
+         .then(res => {
+          if (
+            res.data.code === "success" ||
+            res.data.code === "sms_captcha_has_sent"
+          ) {
+            this.captchasuccess = true;
+          } else {
+            this.$message.error(res.data.message);
+          }
+        })
+        .catch(err => {});
+      }
+    
+    },
+    // 获取短信验证码
+    getCaptchaRecevie() {
+      getSmsCaptchaReceive(this.phone, "reset")
         .then(res => {
           if (res.data.code === "success") {
             this.$message({
@@ -252,9 +275,13 @@ export default {
   margin-top: 33.5px;
 }
 .captcha {
-  display: inline-block;
+    display: inline-block;
   width: 140px;
   margin-left: 12px;
+  height: 56px;
+  float: right;
+  padding: 10px 30px;
+  box-sizing: border-box; 
 }
 .check {
   color: #f00;

@@ -35,7 +35,13 @@
     </div>
 
     <div class="new_articles">
+      <div class="none">
+      {{none}}
+      </div>
       <div is="newComponent" v-for="(item,index) in news" :key="index" :item="item"></div>
+      <div class="loading" v-if="isloading && news.length!=0">
+          <el-button  :loading="true">加载中</el-button>
+        </div>
     </div>
   </div>
 </template>
@@ -54,7 +60,9 @@ export default {
       page2: 1,
       limit: 10,
       top: 186,
-      search: ""
+      search: "",
+      isloading:true,
+      none:""
     };
   },
   methods: {
@@ -78,7 +86,6 @@ export default {
         this.page2=1;
         this.news=[];
       }
-      console.log(this.isActive,this.page,this.page2,this.news);
       if (this.page === this.page2) {
         this.page2 += 1;
         if (this.keyList.indexOf(channelname) === -1) {
@@ -86,6 +93,9 @@ export default {
             .then(res => {
               if (res.data.code === "success") {
                 this.news = this.news.concat(res.data.data.news);
+                console.log(this.news.length);
+                if (this.news.length===0)
+                  this.none = "没有相关文章";
                 this.count = res.data.data.counts;
                 this.page += 1;
               } else {
@@ -94,21 +104,29 @@ export default {
             })
             .catch(err => {
               // 错误处理
+
+              console.log(err);
+
             });
         } else {
           new_getnewList(channelname, this.page, this.limit)
             .then(res => {
               if (res.data.code === "success") {
                 this.news = this.news.concat(res.data.data.news);
-                console.log(this.news);
                 this.count = res.data.data.counts;
                 this.page += 1;
+                if (this.news.length===0)
+                  this.none = "没有相关文章";
               } else {
                 this.$message.error(res.data.message);
               }
             })
             .catch(err => {
               // 错误处理
+              console.log(err);
+
+        // this.$router.push("/404");
+
             });
         }
       }
@@ -124,6 +142,9 @@ export default {
         })
         .catch(err => {
           // 错误处理
+          console.log(err);
+        // this.$router.push("/404");
+
         });
     }
   },
@@ -134,7 +155,7 @@ export default {
    
   },
   created() {
-    this.getnewlist("yaowen",this.page,this.limit);
+    this.getnewlist(this.isActive,this.page,this.limit);
   },
 
   mounted() {
@@ -154,7 +175,6 @@ export default {
 
       let arr = document.querySelectorAll(".article");
       let last = arr[arr.length - 1];
-      console.log(arr.length);
       if (!last)
       return ;
       if (
@@ -165,6 +185,8 @@ export default {
       ) {
         if (arr.length < this.count) {
           this.getnewlist(this.isActive, this.page, this.limit);
+        } else {
+          this.isloading = false;
         }
       }
     };
@@ -172,6 +194,10 @@ export default {
 };
 </script>
 <style scoped>
+.none{
+  text-align: center;
+  font-size: 30px;
+}
 .news {
   background: #f9f9f9;
   padding: 50px 0 30px 0;
@@ -184,6 +210,7 @@ export default {
 .new_articles {
   width: 726px;
   margin: 70px auto 20px;
+  min-height: 600px;
 }
 .nav {
   background: #ffffff;

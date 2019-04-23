@@ -22,7 +22,10 @@ new Vue({
   },
   render: function (h) { return h(App) },
   created(){
-    this.$store.state.user = JSON.parse(localStorage.user);
+    if (localStorage.user) {
+      this.$store.state.user = JSON.parse(localStorage.user);
+    }
     this.$store.state.avatar = localStorage.avatar;
+    this.$store.state.token = localStorage.token;
   }
 }).$mount('#app')

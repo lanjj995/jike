@@ -5,7 +5,10 @@
     </div>
     <div class="content">
       <div class="avator">
-        <img :src="src?src:this.$store.state.avatar?this.$store.state.avatar:header" @mouseover="isshow=true">
+        <img
+          :src="src?src:this.$store.state.avatar?this.$store.state.avatar:header"
+          @mouseover="isshow=true"
+        >
         <label for="avator" class="avatorLable" v-show="isshow" @mouseout="isshow=false">上传头像</label>
         <input
           type="file"
@@ -71,8 +74,8 @@ export default {
       isshow: false,
       checkFile: false,
       checkUsername: "",
-      src:"",
-      header,
+      src: "",
+      header
     };
   },
   methods: {
@@ -82,7 +85,7 @@ export default {
       let file = avator.files[0];
       console.log(file.size);
       if (file) {
-        let size = file.size/1024;
+        let size = file.size / 1024;
         if (size > 300) {
           this.$message.error("上传文件不能大于300K");
         } else {
@@ -106,47 +109,68 @@ export default {
     },
     updateUserMessageMethod() {
       if (this.checkFile) {
-        if (this.checkUsername === "err_long"){
+        // 有头像
+        if (this.checkUsername === "err_long") {
           this.$message.error("昵称长度不能大于32个字符");
           return;
         }
         let avator = document.getElementById("avator");
-      let file = avator.files[0];
+        let file = avator.files[0];
         updateUserMessage(this.$store.state.user.token, file, this.username)
-              .then(res => {
-                if (res.data.code === "success") {
-                  this.$store.state.user.nickname = this.username;
-                  this.$store.state.user.avatar = this.src;
-                  localStorage.user = JSON.stringify(this.$store.state.user);
-                  this.$message(
-                    {type:"success",message:res.data.message}
-                  );
-                } else {
-                  this.$alert(res.data.message,"提示信息",{ confirmButtonText: '确定',});
-                }
-              })
-              .catch(err => {
-                // 错误处理
-              });
-      } else {
-
-        if (this.checkUsername === "success") {
-         updateUserMessage(this.$store.state.user.token, file, this.username)
-              .then(res => {
-                if (res.data.code === "success") {
-                  this.$store.state.user.nickname = this.username;
-                  localStorage.user = JSON.stringify(this.$store.state.user);
+          .then(res => {
+            if (res.data.code === "success") {
+              this.$store.state.user.nickname = this.username;
+              this.$store.state.avatar = this.src;
+              localStorage.avatar = this.src;
+              localStorage.user = JSON.stringify(this.$store.state.user);
+              this.$message({ type: "success", message: res.data.message });
+            } else {
+              if (res.data.code === "account_token_invalid") {
+                  this.$alert("消息提示", res.data.message, {
+                    comfirmButtonText: "确认",
+                    callback: action => {
+                      this.$router.push("/user/login");
+                    }
+                  });
                 } else {
                   this.$message.error(res.data.message);
                 }
-              })
-              .catch(err => {
-                // 错误处理
-              });
-        }   else{
-            this.$alert(this.checkUsername,"提示信息",{ confirmButtonText: '确定',});
+            }
+          })
+          .catch(err => {
+            // 错误处理
+            this.$router.push("/404");
+          });
+      } else {
+        if (this.checkUsername === "success") {
+          updateUserMessage(this.$store.state.user.token, null, this.username)
+            .then(res => {
+              if (res.data.code === "success") {
+                this.$store.state.user.nickname = this.username;
+                localStorage.user = JSON.stringify(this.$store.state.user);
+              } else {
+                if (res.data.code === "account_token_invalid") {
+                  this.$alert("消息提示", res.data.message, {
+                    comfirmButtonText: "确认",
+                    callback: action => {
+                      this.$router.push("/user/login");
+                    }
+                  });
+                } else {
+                  this.$message.error(res.data.message);
+                }
+              }
+            })
+            .catch(err => {
+              // 错误处理
+              this.$router.push("/404");
+            });
+        } else {
+          this.$alert(this.checkUsername, "提示信息", {
+            confirmButtonText: "确定"
+          });
         }
-      } 
+      }
     }
   },
   watch: {
@@ -170,9 +194,6 @@ export default {
   },
   created() {
     this.username = this.$store.state.user.nickname;
-  },
-  updated(){
-    console.log(this.checkUsername,this.src);
   }
 };
 </script>
@@ -233,5 +254,6 @@ table > tr > td:nth-child(2) {
 
 input[type="file"] {
   display: none;
+  background: transparent;
 }
 </style>

@@ -5,13 +5,7 @@
       <div class="header">
         <img :src="this.$store.state.avatar?this.$store.state.avatar:defaultHeader">
       </div>
-      <div class="biaojiyidu" v-show="this.$route.path.indexOf('/mymessage')!=-1">
-        <span>
-
-        <img src="@/assets/icon_sign.png"  >
-        全部标记为已读
-        </span>
-      </div>
+      
       <div class="account-content">
         <div class="nav">
           <ul>
@@ -135,15 +129,6 @@ a{
   border-left: 4px solid #ff8000;
   color: #ff8000;
 }
-.biaojiyidu{
-  width: 1046px;
-  margin:auto;
-  overflow: auto;
-  margin-bottom :10px;
-}
-.biaojiyidu > span{
-  float:right;
-  cursor: pointer;
-}
+
 </style>
 

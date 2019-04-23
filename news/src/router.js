@@ -66,6 +66,13 @@ export default new Router({
     {
       path: '/message',
       name: 'message',
+      beforeEnter:function(to,from,next){
+        if (!localStorage.token) {
+          next("/user/login");
+        } else {
+          next();
+        }
+      },
       component: function () {
         return import('./views/message.vue');
       },
@@ -89,6 +96,13 @@ export default new Router({
     {
       path:'/account',
       name:'account',
+      beforeEnter:function(to,from,next){
+        if (!localStorage.token) {
+          next("/user/login");
+        } else {
+          next();
+        }
+      },
       component:function(){
         return import('./views/account.vue');
       },
@@ -107,6 +121,13 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path:"/404",
+      name:"404",
+      component:function(){
+        return import("./views/404.vue");
+      }
     }
   ]
 })

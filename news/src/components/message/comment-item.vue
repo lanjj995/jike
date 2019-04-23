@@ -17,7 +17,7 @@
             {{comment.against}}
           </span>
         </p>
-        <p class="gailou">
+        <p class="gailou" v-if="comment.data">
           <span>盖楼被隐藏</span>
           <span>
             {{!(isShow.indexOf(comment.commentId)===-1)?'折叠':'展开'}}
@@ -27,9 +27,9 @@
         <div class="body" v-if="!(isShow.indexOf(comment.commentId)===-1)">
           <comment
             :flag="'sss'"
-            :commentList="commentList"
-            :commentIds="commentIds"
-            :level="commentIds.split(',').length"
+            :commentList="comment.data.comments"
+            :commentIds="comment.data.commentIds"
+            :level="comment.data.commentIds.split(',').length"
           ></comment>
         </div>
       </div>
@@ -131,7 +131,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .comment-item {
   border-bottom: 1px solid #dcdcdc;
   margin-bottom: 20px;

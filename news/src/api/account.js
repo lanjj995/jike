@@ -18,6 +18,14 @@ function userComments(token,page,limit){
         }
     })
 }
+// 评论详情
+function userCommentslevel(commentId) {
+    return Axios.get("https://dev.apis.ittim.ltd/nWGq7NqEf/comments/level",{
+        params:{
+            commentId
+        }
+    })
+}
 // 用户信息列表
 function messageList(token,page,limit){
     return Axios.get("https://dev.apis.ittim.ltd/nWGq7NqEf/message/list",{
@@ -57,5 +65,6 @@ export {
     messageList,
     messageCheck,
     messageCount,
-    updateUserMessage
+    updateUserMessage,
+    userCommentslevel
 }

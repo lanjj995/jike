@@ -1,22 +1,25 @@
 import Axios from "./index";
 
 function new_getnewList(channelname, page, limit) {
-    let url = '/new_' + channelname+"_" +page+ '.json';
-    return Axios.get(url, {
-        pramas: {
-            channelname,
-            page,
-            limit
+    console.log(channelname, page, limit);
+
+    return Axios.get('/news/list', {
+        // get方法传递params参数对象
+        params: {
+          channelname: channelname,
+          page: page,
+          limit: limit
         }
-    });
+      })
+   
 }
 
 function hotNews_list() {
-    return Axios.get('/hotnews_list.json');
+    return Axios.get('/hotNews/list');
 }
 
 function details(id) {
-    return Axios.get('https://dev.apis.ittim.ltd/nWGq7NqEf/news/details', {
+    return Axios.get('/news/details', {
         params: {
             id
         }
@@ -24,7 +27,7 @@ function details(id) {
 }
 // 评论列表
 function comment_list(id, page, limit) {
-    return Axios.get('https://dev.apis.ittim.ltd/nWGq7NqEf/comment/list', {
+    return Axios.get('/comment/list', {
         params: {
             id,
             page,
@@ -35,7 +38,7 @@ function comment_list(id, page, limit) {
 
 // 评论文章 | 评论评论
 function addcomment(articleId, commentId, content, token) {
-    return Axios.post('https://dev.apis.ittim.ltd/nWGq7NqEf/comment/add', {
+    return Axios.post('/comment/add', {
         articleId,
         commentId,
         content,
@@ -45,7 +48,7 @@ function addcomment(articleId, commentId, content, token) {
 
 // 评论评论
 function commentRate(commentId, token, rate) {
-    return Axios.post("https://dev.apis.ittim.ltd/nWGq7NqEf/comment/rate", {
+    return Axios.post("/comment/rate", {
         commentId,
         token,
         rate
@@ -55,8 +58,11 @@ function commentRate(commentId, token, rate) {
 // 获取搜索热词
 function searchList(keyword, page, limit) {
     //return Axios.post('/news/search', {
-    return Axios.get('/search_list.json', {
-        keyword, page, limit
+    return Axios.get('/news/search', {
+        params:{
+            keyword, page, limit
+    
+        }
     })
 }
 

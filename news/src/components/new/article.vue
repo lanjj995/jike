@@ -15,7 +15,7 @@
           </span>
         </div>
       </div>
-      <img src="@/assets/new.png" class="articleImg" @click="goDetails(''+ item._id +'')">
+      <img :src="item.cover?'https://dev.apis.ittim.ltd/nWGq7NqEf/static/'+item.cover:newImg" class="articleImg" @click="goDetails(''+ item._id +'')">
       <div class="time">
         <p>{{item.create_time | getTime}}</p>
         <p :title="item.source">{{item.source | sourcefilter}}</p>
@@ -24,6 +24,8 @@
   </div>
 </template>
 <script>
+import newImg from "@/assets/new.png";
+
 export default {
   props:{
     item:Object
@@ -31,7 +33,8 @@ export default {
   data(){
     return {
       commentUrl:"",
-      sawUrl:""
+      sawUrl:"",
+      newImg
     }
   },
   methods:{

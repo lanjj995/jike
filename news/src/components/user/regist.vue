@@ -5,7 +5,7 @@
       <span class="check">{{checkObject.checkPhoneValue}}</span>
     </inputComponent>
     <inputComponent type="text" :width="228" placeholder="图形验证码" v-model="imgCaptcha">
-      <span v-html="captcha" class="captcha"></span>
+      <span v-html="captcha" class="captcha" ></span>
       <span class="check">{{checkObject.checkImgCaptchaVlaue}}</span>
     </inputComponent>
     <inputComponent :width="228" placeholder="短信验证码" v-model="smsCaptcha">
@@ -38,7 +38,7 @@
     <div class="finishDiv">
       <buttonComponent type="button" class="finishButton" value="注册" @click.native="registmethod"></buttonComponent>
     </div>
-    <div class="form-bottom1" v-if="isRegist">
+    <div class="form-bottom1" >
       <span>已经有APIS账号了</span>
       <buttonComponent value="登录" class="loginButton" @click.native="goLogin"></buttonComponent>
     </div>
@@ -64,6 +64,7 @@ export default {
       smsCaptcha: "",
       password: "",
       comfirPasssword: "",
+      captchasuccess:false,
       checkObject: {
         checkPhoneValue: "",
         checkImgCaptchaVlaue: "",
@@ -148,6 +149,28 @@ export default {
     },
     // 获取短信验证码
     getCaptcha() {
+      var isPhone = this.checkPhone();
+      if (!isPhone) return;
+      if (this.captchasuccess) {
+        this.getCaptchaRecevie();
+      } else {
+         getSmsCaptcha(this.phone, "register", this.imgCaptcha)
+         .then(res => {
+          if (
+            res.data.code === "success" ||
+            res.data.code === "sms_captcha_has_sent"
+          ) {
+            this.captchasuccess = true;
+          } else {
+            this.$message.error(res.data.message);
+          }
+        })
+        .catch(err => {});
+      }
+    
+    },
+    // 获取短信验证码
+    getCaptchaRecevie() {
       getSmsCaptchaReceive(this.phone, "register")
         .then(res => {
           if (res.data.code === "success") {
@@ -196,8 +219,6 @@ export default {
         getImgCaptcha()
       .then(res => {
         this.captcha = res.data;
-        console.log(res);
-        console.log(this.captcha);
       })
       .catch(err => {
         console.log(err);
@@ -205,6 +226,7 @@ export default {
       }
 
   },
+
   created() {
     this.getImgCaptchaMethod();
   },
@@ -265,7 +287,12 @@ export default {
   display: inline-block;
   width: 140px;
   margin-left: 12px;
+  height: 56px;
+  float: right;
+  padding: 10px 30px;
+  box-sizing: border-box; 
 }
+
 .check {
   color: #f00;
   font-size: 12px !important;

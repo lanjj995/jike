@@ -61,18 +61,18 @@ export default {
       }
     },
     loginmethod() {
-      console.log("111111");
       var isPhone =this.checkPhone();
       if (!isPhone) return;
       var isPassword = this.checkPassword();
       if (!isPassword) return;
-      console.log("22222222");
       // 登录
       login(this.phone, this.password)
         .then(res => {
           if (res.data.code === "success") {
             this.$store.state.user = res.data.data.account;
+            this.$store.state.token = res.data.data.account.token;
             localStorage.user = JSON.stringify(res.data.data.account);
+            localStorage.token = res.data.data.account.token;
             this.$message({
               type:'success',
               message:'登陆成功'

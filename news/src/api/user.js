@@ -6,9 +6,10 @@ function getImgCaptcha() {
 }
 // 获取短信验证码
 function getSmsCaptcha(phone, type, imgCaptcha) {
+    Axios.withCredentials = true;
     return Axios.post('https://dev.apis.ittim.ltd/nWGq7NqEf/sms/captcha', {
-            phone,
-            type,
+        phone,
+        type,
             imgCaptcha
     });
 }
@@ -46,7 +47,7 @@ function findPassword(phone, SMSCaptcha, password) {
 // 修改密码
 function updatepsw(phone,smsCaptcha,password){
     return Axios.post('https://dev.apis.ittim.ltd/nWGq7NqEf/account/reset',{
-        phone, SMSCaptcha, password
+        phone, smsCaptcha, password
     })
 }
 export {

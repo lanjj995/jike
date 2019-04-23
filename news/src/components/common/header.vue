@@ -1,14 +1,10 @@
 <template>
   <header>
     <div :class="[color?'logoWhite':'logo']"></div>
-    <span>新闻项目</span>
-    <div class="login-regist" v-show="!this.$store.state.user">
-      <a href="#" :style="{color:color?color:'#0074ff;'}">登录</a>
-      <a href="#" :style="{color:color?color:'#0074ff;'}">注册</a>
-    </div>
-    <div class="user-header" v-show="this.$store.state.user">
-      <img :src="avatar?avatar:defaultAvator" alt="头像" id="header" @click="goMessage">
-      <span id="username" @click="goMessage">{{user.nickname}}</span>
+    <span @click="goNew">新闻项目</span>
+     <div class="user-header" v-if="this.$store.state.token">
+      <img :src="this.$store.state.avatar?this.$store.state.avatar:defaultAvator" alt="头像" id="header" class="goMessage" @click="goMessage">
+      <span id="username" @click="goMessage" class="goMessage">{{this.$store.state.user.nickname}}</span>
 
       <img :src="imgUrl" class="arrow_down" @click="falg = !falg">
       <nav :style="{display:falg?'block':'none'}">
@@ -22,6 +18,11 @@
         </li>
       </nav>
     </div>
+    <div class="login-regist" v-else>
+      <router-link to="/user/login" :style="{color:color?color:'#0074ff;'}">登录</router-link>
+      <router-link to="/user/regist" :style="{color:color?color:'#0074ff;'}">注册</router-link>
+    </div>
+   
   </header>
 </template>
 <script>
@@ -39,6 +40,9 @@ export default {
     };
   },
   methods:{
+    goNew(){
+      this.$router.push({path:'/new'});
+    },
     goMessage(){
       this.$router.push({path:'/message'});
     },
@@ -46,8 +50,10 @@ export default {
       this.$router.push({path:'/account'});
     },
     loginOut(){
-      this.$store.state.user = {};
-      localStorage.user = null;
+      this.$store.state.user = null;
+      localStorage.user = "";
+      this.$store.state.token = null;
+      localStorage.token = "";
       this.$router.push({path:'/user/login'});
     }
   },
@@ -67,6 +73,9 @@ export default {
 </script>
 
 <style>
+.goMessage{
+  cursor: pointer;
+}
 header {
   width: 100%;
   height: 80px;
@@ -101,6 +110,7 @@ header > span {
   display: inline-block;
   height: 80px;
   line-height: 80px;
+  cursor: pointer;
 }
 
 header > .login-regist {

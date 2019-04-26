@@ -11,5 +11,11 @@ Content-Type: application/json
 
 ### 删除banner
 GET {{url}}/banner/delete?id=1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibGlhbmdsb25nZmVuIiwiaWF0IjoxNTU2MDEyMTcyLCJleHAiOjE1NTYwMTIyMzJ9.wU6MKRXYQNgn47maihZ37H4lYo7G9-oBAOlU4tF4GaU
+Authorization: sss
+
+### 删除teacher
+GET {{url}}/teacher/delete?id=40bff310-636c-11e9-bfc4-ffc83613e3d1
+Authorization: sss
+
+
 

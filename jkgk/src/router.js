@@ -29,6 +29,13 @@ export default new Router({
                     }
                 },
                 {
+                    path:'user',
+                    name:'user',
+                    component:function(){
+                        return import ('./components/tabs/user');
+                    }
+                },
+                {
                     path:'banner',
                     name:'banner',
                     component:function(){
